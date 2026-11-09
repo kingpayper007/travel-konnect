@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Available Transport — TRAVELKONNECT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --navy:#071a32; --orange:#ff724c; --cream:#fff8ee; --ink:#12233b; --muted:#708097; --line:#e0e7ef; }
+    * { box-sizing:border-box; margin:0; padding:0; } body { font-family:"DM Sans",sans-serif; background:var(--cream); color:var(--ink); }
+    header { color:#fff; padding:22px 0 85px; background:linear-gradient(120deg,#071a32,#174b82); } .wrap { width:min(1080px,92%); margin:auto; }.top { display:flex; align-items:center; justify-content:space-between; }.logo { font-size:1.4rem; font-weight:700; letter-spacing:-.7px; }.logo span { color:var(--orange); }.back { color:#fff; text-decoration:none; font-size:.9rem; opacity:.9; }.route-title { margin-top:65px; }.eyebrow { color:#ffc5b5; text-transform:uppercase; font-size:.76rem; font-weight:700; letter-spacing:1.7px; }.route-title h1 { margin:10px 0; font:clamp(2.4rem,5vw,4.5rem)/1.05 "Playfair Display",serif; }.route-title p { color:#d9e4f5; }.search-summary { transform:translateY(-34px); display:flex; align-items:center; justify-content:space-between; gap:18px; padding:20px 24px; border-radius:16px; background:#fff; box-shadow:0 14px 35px rgba(18,35,59,.12); }.search-summary strong { display:block; }.search-summary small { color:var(--muted); }.button { display:inline-block; border:0; border-radius:30px; padding:13px 20px; background:var(--orange); color:#fff; text-decoration:none; font:700 .9rem "DM Sans",sans-serif; cursor:pointer; }.content { padding:25px 0 80px; }.content-head { display:flex; justify-content:space-between; gap:16px; align-items:end; margin-bottom:24px; }.content h2 { font:2rem "Playfair Display",serif; }.note { color:var(--muted); font-size:.9rem; }.operator { display:grid; grid-template-columns:1.2fr 1fr .8fr auto; align-items:center; gap:20px; padding:22px; margin:12px 0; background:#fff; border:1px solid var(--line); border-radius:16px; transition:transform .2s,box-shadow .2s; }.operator:hover { transform:translateY(-3px); box-shadow:0 12px 25px rgba(18,35,59,.08); }.company { display:flex; gap:13px; align-items:center; }.mark { display:grid; place-items:center; width:47px; height:47px; border-radius:13px; background:#e9f1ff; color:#1d64c8; font-size:1.1rem; font-weight:700; }.company strong,.time strong { display:block; }.company small,.time small { color:var(--muted); display:block; margin-top:4px; }.price { font-weight:700; }.price small { display:block; color:var(--muted); font-weight:400; margin-top:4px; }.tag { display:inline-block; margin-top:6px; padding:4px 8px; border-radius:20px; background:#e4f8ec; color:#157640; font-size:.72rem; font-weight:700; }.confirmation { display:none; margin-top:24px; padding:22px; text-align:center; color:#166f3e; background:#e5f8ec; border-radius:14px; }.confirmation.open { display:block; } @media(max-width:720px) { .operator { grid-template-columns:1fr 1fr; }.operator .button { justify-self:start; }.search-summary { align-items:flex-start; flex-direction:column; } } @media(max-width:440px) { .operator { grid-template-columns:1fr; }.route-title { margin-top:45px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="top"><div class="logo">TRAVEL<span>KONNECT</span></div><a class="back" href="roamora-travel-website.html">← Modify search</a></div>
+      <div class="route-title"><div class="eyebrow">Your road journey</div><h1 id="routeHeading">Available transport</h1><p id="routeDetails">Loading your trip details…</p></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="search-summary"><div><strong id="summaryRoute">Your selected route</strong><small id="summaryDetails">Choose the right operator for your trip.</small></div><a class="button" href="roamora-travel-website.html">New search</a></div>
+    <section class="content">
+      <div class="content-head"><div><h2>Available transport companies</h2><p class="note">Choose an operator to continue with your booking.</p></div><span class="note">6 options found</span></div>
+      <div id="operatorList"></div>
+      <div class="confirmation" id="confirmation"></div>
+    </section>
+  </main>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const trip = { from: params.get('from') || 'Your state', to: params.get('to') || 'Your destination', date: params.get('date'), travelers: params.get('travelers') || '1 Passenger' };
+    const dateText = trip.date ? new Date(trip.date + 'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) : 'Date to be confirmed';
+    document.getElementById('routeHeading').textContent = `${trip.from} → ${trip.to}`;
+    document.getElementById('routeDetails').textContent = `${dateText} · ${trip.travelers}`;
+    document.getElementById('summaryRoute').textContent = `${trip.from} to ${trip.to}`;
+    document.getElementById('summaryDetails').textContent = `${dateText} · ${trip.travelers}`;
+    const defaultOperators = [
+      ['GIGM', 'GIGM Motors', '6:30 AM', 'Executive coach', '₦18,500', 'Popular choice'],
+      ['GUO', 'GUO Transport', '7:15 AM', 'Air-conditioned coach', '₦17,000', 'Available'],
+      ['PMT', 'Peace Mass Transit', '8:00 AM', 'Standard coach', '₦14,500', 'Available'],
+      ['ABC', 'ABC Transport', '9:30 AM', 'Executive coach', '₦19,500', 'Premium'],
+      ['CH', 'Chisco Transport', '11:00 AM', 'Air-conditioned coach', '₦16,500', 'Available'],
+      ['CC', 'Cross Country', '1:30 PM', 'Standard coach', '₦13,500', 'Best value']
+    ];
+    const operators = JSON.parse(localStorage.getItem('travelkonnectOperators') || 'null') || defaultOperators;
+    document.getElementById('operatorList').innerHTML = operators.map(([mark,name,time,service,price,tag]) => `<article class="operator"><div class="company"><div class="mark">${mark}</div><div><strong>${name}</strong><small>${service}</small><span class="tag">${tag}</span></div></div><div class="time"><strong>${time}</strong><small>Estimated departure</small></div><div class="price">${price}<small>per passenger</small></div><button class="button" data-company="${name}" data-service="${service}" data-price="${price}">Select ride</button></article>`).join('');
+    document.querySelectorAll('[data-company]').forEach(button => button.addEventListener('click', () => {
+      const booking = { ...trip, company: button.dataset.company, service: button.dataset.service, price: button.dataset.price };
+      localStorage.setItem('travelkonnectBooking', JSON.stringify(booking));
+      const bookingQuery = new URLSearchParams(booking).toString();
+      window.location.href = `choose-seat.html?${bookingQuery}`;
+    }));
+  </script>
+</body>
+</html>
